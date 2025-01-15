@@ -1,6 +1,8 @@
 import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
 
 const Result = () => {
   const location = useLocation();
@@ -16,10 +18,13 @@ const Result = () => {
     }
   }, []);
   const isSuccess = score > 5;
-
   const handleLogOut = () => {
-    navigate('/')
-  }
+    signOut(auth).then(() => {
+      navigate('/');
+    }).catch((error) => {
+      console.error("Error signing out: ", error);
+    });
+  };
   return (
     <Grid sx={{maxWidth:'100vw'}}>
     <Grid container justifyContent="flex-end" minWidth='100vw' backgroundColor= '#f9f9f9'>
